@@ -14,3 +14,6 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Code 101"
 include ':app'
+include ':data'
+include ':framework:firebase'
+include ':domain'

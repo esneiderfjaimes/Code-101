@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">Code 101</string>
     <string name="hi">Hi!</string>
+
+    <!--Login-->
+    <string name="sign_in_with_google">Sign in with Google</string>
+    <string name="sign_in">Sign In</string>
+    <string name="you_logged_in_as">you logged in as</string>
 </resources>

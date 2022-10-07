@@ -97,3 +97,5 @@ lint/tmp/
 /captures
 .cxx
 .idea/
+framework/firebase/google-services.json
+app/google-services.json

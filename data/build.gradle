@@ -1,5 +1,5 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-parcelize'
     id 'kotlin-kapt'
@@ -7,15 +7,12 @@ plugins {
 }
 
 android {
-    namespace 'red.code101.app'
+    namespace 'red.code101.data'
     compileSdk 33
 
     defaultConfig {
-        applicationId "red.code101.app"
         minSdk 25
         targetSdk 33
-        versionCode 1
-        versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -23,7 +20,6 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
     compileOptions {
@@ -33,31 +29,20 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    buildFeatures {
-        viewBinding true
-        dataBinding true
-    }
 }
 
 dependencies {
 
     // Project
-    implementation project(":data")
+    implementation project(":framework:firebase")
     implementation project(":domain")
 
     // Kotlin Core
     implementation Android.core
     implementation Jetbrains.kotlinx_coroutines
-    implementation Jetbrains.kotlinx_coroutines_play_services
 
     // Dagger
     implementation Dagger.hilt
     kapt Dagger.hilt_compiler
-
-    implementation 'androidx.appcompat:appcompat:1.5.1'
-    implementation 'com.google.android.material:material:1.8.0-alpha01'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.2'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.5.2'
 
 }

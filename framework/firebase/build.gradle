@@ -1,21 +1,19 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-parcelize'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'com.google.gms.google-services'
 }
 
 android {
-    namespace 'red.code101.app'
+    namespace 'code101.framework.firebase'
     compileSdk 33
 
     defaultConfig {
-        applicationId "red.code101.app"
         minSdk 25
         targetSdk 33
-        versionCode 1
-        versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -23,7 +21,9 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        all {
+            buildConfigField("String", "ServerClientId", "\"$GoogleSignInServerClientId\"")
         }
     }
     compileOptions {
@@ -33,16 +33,11 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    buildFeatures {
-        viewBinding true
-        dataBinding true
-    }
 }
 
 dependencies {
 
     // Project
-    implementation project(":data")
     implementation project(":domain")
 
     // Kotlin Core
@@ -54,10 +49,11 @@ dependencies {
     implementation Dagger.hilt
     kapt Dagger.hilt_compiler
 
-    implementation 'androidx.appcompat:appcompat:1.5.1'
-    implementation 'com.google.android.material:material:1.8.0-alpha01'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.2'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.5.2'
+    // Play Services
+    implementation Google.play_services_auth
 
+    // Firebase
+    implementation platform(Firebase.bom)
+    implementation Firebase.analytics
+    implementation Firebase.auth
 }
