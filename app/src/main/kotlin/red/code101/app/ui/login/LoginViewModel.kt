@@ -17,10 +17,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import javax.inject.Singleton
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    currentAuth: CurrentAuthUseCase,
+    private val currentAuth: CurrentAuthUseCase,
     private val authGoogle: AuthGoogleUseCase,
 ) : ViewModel() {
 
@@ -30,19 +31,14 @@ class LoginViewModel @Inject constructor(
     private val _event = MutableLiveData<LoginEvent>()
     val event: LiveData<LoginEvent> get() = _event
 
-    // endregion
-
-    // region Override Methods & Callbacks
-
-    init {
-        currentAuth.invoke()?.let { auth ->
-            _event.postValue(LoginEvent.SuccessfulAuth(auth))
-        }
-    }
+    val needInflate get() =  getAuth() == null
 
     // endregion
 
     // region Public Methods
+
+    @Singleton
+    fun getAuth() = currentAuth.invoke()
 
     fun initAuthWithGoogle(fragment: Fragment) {
         result =

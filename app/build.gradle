@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-parcelize'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'androidx.navigation.safeargs'
 }
 
 android {
@@ -53,6 +54,10 @@ dependencies {
     // Dagger
     implementation Dagger.hilt
     kapt Dagger.hilt_compiler
+
+    // Glide
+    implementation Bumptech.glide
+    kapt Bumptech.glide_compiler
 
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'com.google.android.material:material:1.8.0-alpha01'

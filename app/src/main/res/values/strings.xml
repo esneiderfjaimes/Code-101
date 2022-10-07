@@ -6,4 +6,8 @@
     <string name="sign_in_with_google">Sign in with Google</string>
     <string name="sign_in">Sign In</string>
     <string name="you_logged_in_as">you logged in as</string>
+    <string name="account">Account</string>
+    <string name="home">Home</string>
+    <string name="search">Search</string>
+    <string name="settings">Settings</string>
 </resources>

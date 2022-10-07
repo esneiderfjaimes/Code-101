@@ -1,7 +1,12 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+
+    <color name="filter">#40000000</color>
+    <color name="background">@color/black</color>
+
     <!-- Base application theme. -->
     <style name="Base.Theme.Code101" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="android:windowTranslucentNavigation">true</item>
     </style>
 </resources>

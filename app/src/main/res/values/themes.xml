@@ -1,4 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+
+    <color name="filter">#40FFFFFF</color>
+    <color name="background">@color/white</color>
+
     <!-- Base application theme. -->
     <style name="Base.Theme.Code101" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->

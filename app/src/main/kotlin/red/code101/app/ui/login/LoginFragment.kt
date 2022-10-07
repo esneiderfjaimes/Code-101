@@ -29,21 +29,26 @@ class LoginFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        viewModel.getAuth()?.let {
+            observerEvent(LoginEvent.SuccessfulAuth(it))
+            return
+        }
         // Initialize result to use authentication with google
         viewModel.initAuthWithGoogle(this)
     }
 
-    override fun onCreateView(i: LayoutInflater, c: ViewGroup?, b: Bundle?): View {
-        _binding = FragmentLoginBinding.inflate(i, c, false).apply {
-            fillMarginWhitSetDecorFitsSystemWindows()
+    override fun onCreateView(i: LayoutInflater, c: ViewGroup?, b: Bundle?): View? =
+        if (viewModel.needInflate) {
+            _binding = FragmentLoginBinding.inflate(i, c, false).apply {
+                fillMarginWhitSetDecorFitsSystemWindows()
 
-            signInGoogleBtn.setOnClickListener {
-                viewModel.launchSignInGoogle()
+                signInGoogleBtn.setOnClickListener {
+                    viewModel.launchSignInGoogle()
+                }
             }
-        }
-        viewModel.event.observe(viewLifecycleOwner, Observer(this::observerEvent))
-        return binding.root
-    }
+            viewModel.event.observe(viewLifecycleOwner, Observer(this::observerEvent))
+            binding.root
+        } else null
 
     // endregion
 
@@ -53,7 +58,7 @@ class LoginFragment : Fragment() {
         when (event) {
             is LoginEvent.ShowError -> Unit
             is LoginEvent.SuccessfulAuth -> {
-                snackbarAuth(binding.root, event.auth)
+                snackbarAuth(requireActivity().window.decorView, event.auth)
             }
             LoginEvent.SignUp -> Unit
         }

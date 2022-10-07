@@ -2,13 +2,14 @@ package red.code101.app.utils
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.view.View
 import androidx.viewbinding.ViewBinding
 
 class WindowUtils {
     companion object {
         @SuppressLint("InternalInsetResource", "DiscouragedApi")
         @JvmStatic
-        private fun Context.getDimenByName(name: String): Int {
+        fun Context.getDimenByName(name: String): Int {
             var result = 0
             val resourceId = resources.getIdentifier(name, "dimen", "android")
             if (resourceId > 0) {
@@ -18,8 +19,8 @@ class WindowUtils {
         }
 
         @JvmStatic
-        fun ViewBinding.fillMarginWhitSetDecorFitsSystemWindows() {
-            root.setPadding(
+        fun ViewBinding.fillMarginWhitSetDecorFitsSystemWindows(container: View? = null) {
+            (container ?: root).setPadding(
                 0,
                 root.context.getDimenByName("status_bar_height"),
                 0,
