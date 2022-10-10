@@ -5,4 +5,10 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>
+
+    <style name="ShapeAppearance33">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">33%</item>
+    </style>
+
 </resources>

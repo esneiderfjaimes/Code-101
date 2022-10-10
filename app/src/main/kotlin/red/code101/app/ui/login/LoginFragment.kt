@@ -12,6 +12,7 @@ import red.code101.app.databinding.FragmentLoginBinding
 import red.code101.app.ui.login.LoginViewModel.LoginEvent
 import red.code101.app.utils.WindowUtils.Companion.fillMarginWhitSetDecorFitsSystemWindows
 import red.code101.app.utils.snacks.snackbarAuth
+import red.code101.app.utils.toast
 
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
@@ -38,13 +39,11 @@ class LoginFragment : Fragment() {
     }
 
     override fun onCreateView(i: LayoutInflater, c: ViewGroup?, b: Bundle?): View? =
-        if (viewModel.needInflate) {
+        if (true || viewModel.needInflate) {
             _binding = FragmentLoginBinding.inflate(i, c, false).apply {
+                viewModel = this@LoginFragment.viewModel
+                lifecycleOwner = this@LoginFragment
                 fillMarginWhitSetDecorFitsSystemWindows()
-
-                signInGoogleBtn.setOnClickListener {
-                    viewModel.launchSignInGoogle()
-                }
             }
             viewModel.event.observe(viewLifecycleOwner, Observer(this::observerEvent))
             binding.root
@@ -56,7 +55,9 @@ class LoginFragment : Fragment() {
 
     private fun observerEvent(event: LoginEvent) {
         when (event) {
-            is LoginEvent.ShowError -> Unit
+            is LoginEvent.ShowError -> {
+                event.error.message?.let { toast(it) }
+            }
             is LoginEvent.SuccessfulAuth -> {
                 snackbarAuth(requireActivity().window.decorView, event.auth)
             }

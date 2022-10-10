@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.Flow
 interface AuthDataSource {
     fun currentUser(): Auth?
     fun authWithGoogleIntent(context: Context): Intent?
-    fun authWithGoogle(activityResult: ActivityResult): Flow<Result<Auth>>
+    fun authWithGoogle(activityResult: ActivityResult): Flow<Auth>
+    fun signInWithEmailAndPassword(email: String, password: String): Flow<Auth>
     fun signOut()
 }
