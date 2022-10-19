@@ -6,8 +6,9 @@ import androidx.fragment.app.Fragment
 import code101.domain.Auth
 import com.google.android.material.snackbar.Snackbar
 import red.code101.app.databinding.ViewSnackAuthBinding
+import red.code101.app.utils.getDecorView
 
-fun Fragment.snackbarAuth(view: View, auth: Auth) {
+fun Fragment.snackbarAuth(view: View = getDecorView(), auth: Auth) {
 
     // create an instance of the snackbar
     val snackbar = Snackbar.make(view, "", Snackbar.LENGTH_SHORT)

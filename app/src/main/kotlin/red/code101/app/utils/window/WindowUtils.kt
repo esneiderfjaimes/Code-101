@@ -1,9 +1,12 @@
-package red.code101.app.utils
+package red.code101.app.utils.window
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.view.View
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.viewbinding.ViewBinding
+import red.code101.app.utils.window.insets.RootViewDeferringInsetsCallback
 
 class WindowUtils {
     companion object {
@@ -26,6 +29,15 @@ class WindowUtils {
                 0,
                 root.context.getDimenByName("navigation_bar_height")
             )
+        }
+
+        @JvmStatic
+        fun showSoftKeyboardSetup(view: View) {
+            val deferringInsetsListener = RootViewDeferringInsetsCallback(
+                persistentInsetTypes = WindowInsetsCompat.Type.systemBars(),
+                deferredInsetTypes = WindowInsetsCompat.Type.ime()
+            )
+            ViewCompat.setOnApplyWindowInsetsListener(view, deferringInsetsListener)
         }
     }
 }

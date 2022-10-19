@@ -19,6 +19,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -57,12 +58,15 @@ class LoginViewModel @Inject constructor(
         result?.launch(authGoogle.authWithGoogleIntent)
     }
 
-    private fun launchFlowAuth(flowResultAuth: Flow<Auth>, nameFunc: String) {
+    private fun launchFlowAuth(
+        flowResultAuth: Flow<Auth>,
+        nameFunc: String,
+    ) {
         viewModelScope.launch {
             flowResultAuth.catch { exception ->
                 Log.e(tag, "$nameFunc:catch", exception)
                 _event.postValue(LoginEvent.ShowError(exception))
-            }.flowOn(Dispatchers.IO).collect { auth ->
+            }.flowOn(Dispatchers.IO).firstOrNull()?.let { auth ->
                 _event.postValue(LoginEvent.SuccessfulAuth(auth))
             }
         }
@@ -79,14 +83,10 @@ class LoginViewModel @Inject constructor(
         if (email.isNullOrBlank()) return
         if (password.isNullOrBlank()) return
 
-        try {
-            launchFlowAuth(
-                flowResultAuth = authEmailAndPassword.invoke(email.toString(), password.toString()),
-                nameFunc = "authEmailAndPassword"
-            )
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+        launchFlowAuth(
+            flowResultAuth = authEmailAndPassword.invoke(email.toString(), password.toString()),
+            nameFunc = "authEmailAndPassword"
+        )
     }
 
     // endregion

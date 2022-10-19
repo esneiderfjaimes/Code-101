@@ -4,15 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import dagger.hilt.android.AndroidEntryPoint
 import red.code101.app.databinding.FragmentLoginBinding
 import red.code101.app.ui.login.LoginViewModel.LoginEvent
-import red.code101.app.utils.WindowUtils.Companion.fillMarginWhitSetDecorFitsSystemWindows
 import red.code101.app.utils.snacks.snackbarAuth
 import red.code101.app.utils.toast
+import red.code101.app.utils.window.WindowUtils
+import red.code101.app.utils.window.WindowUtils.Companion.fillMarginWhitSetDecorFitsSystemWindows
 
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
@@ -30,12 +32,12 @@ class LoginFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.getAuth()?.let {
-            observerEvent(LoginEvent.SuccessfulAuth(it))
-            return
-        }
         // Initialize result to use authentication with google
         viewModel.initAuthWithGoogle(this)
+
+        viewModel.getAuth()?.let {
+            observerEvent(LoginEvent.SuccessfulAuth(it))
+        }
     }
 
     override fun onCreateView(i: LayoutInflater, c: ViewGroup?, b: Bundle?): View? =
@@ -43,11 +45,22 @@ class LoginFragment : Fragment() {
             _binding = FragmentLoginBinding.inflate(i, c, false).apply {
                 viewModel = this@LoginFragment.viewModel
                 lifecycleOwner = this@LoginFragment
+
+                passwordInput.doOnTextChanged { text, _, _, _ ->
+                    binding.forgotBtn.visibility =
+                        if (text.isNullOrBlank()) View.VISIBLE else View.GONE
+                }
+
                 fillMarginWhitSetDecorFitsSystemWindows()
             }
             viewModel.event.observe(viewLifecycleOwner, Observer(this::observerEvent))
             binding.root
         } else null
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        WindowUtils.showSoftKeyboardSetup(binding.root)
+    }
 
     // endregion
 
@@ -59,7 +72,7 @@ class LoginFragment : Fragment() {
                 event.error.message?.let { toast(it) }
             }
             is LoginEvent.SuccessfulAuth -> {
-                snackbarAuth(requireActivity().window.decorView, event.auth)
+                snackbarAuth(auth = event.auth)
             }
             LoginEvent.SignUp -> Unit
         }

@@ -12,6 +12,10 @@ import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
 import red.code101.app.R
 
+fun Fragment.getDecorView(): View {
+    return requireActivity().window.decorView
+}
+
 fun Fragment.toast(text: String) {
     Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT).show()
 }

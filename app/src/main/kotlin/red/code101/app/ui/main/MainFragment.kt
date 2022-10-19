@@ -15,7 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import red.code101.app.R
 import red.code101.app.databinding.FragmentMainBinding
 import red.code101.app.databinding.NavigationRailFabBinding
-import red.code101.app.utils.WindowUtils.Companion.fillMarginWhitSetDecorFitsSystemWindows
+import red.code101.app.utils.window.WindowUtils.Companion.fillMarginWhitSetDecorFitsSystemWindows
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
