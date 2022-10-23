@@ -1,4 +1,4 @@
-package red.code101.app.ui.login
+package red.code101.app.ui.auth.login
 
 import android.content.Intent
 import android.text.Editable
@@ -13,7 +13,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import code101.data.AuthEmailAndPasswordUseCase
 import code101.data.AuthGoogleUseCase
-import code101.data.CurrentAuthUseCase
 import code101.domain.Auth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -23,29 +22,20 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import javax.inject.Singleton
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val currentAuth: CurrentAuthUseCase,
     private val authGoogle: AuthGoogleUseCase,
     private val authEmailAndPassword: AuthEmailAndPasswordUseCase,
 ) : ViewModel() {
-
     // region Fields
 
     private var result: ActivityResultLauncher<Intent>? = null
     private val _event = MutableLiveData<LoginEvent>()
     val event: LiveData<LoginEvent> get() = _event
 
-    val needInflate get() = getAuth() == null
-
     // endregion
-
     // region Public Methods
-
-    @Singleton
-    fun getAuth() = currentAuth.invoke()
 
     fun initAuthWithGoogle(fragment: Fragment) {
         result =
@@ -56,6 +46,26 @@ class LoginViewModel @Inject constructor(
 
     fun launchSignInGoogle() {
         result?.launch(authGoogle.authWithGoogleIntent)
+    }
+
+    fun authEmailAndPassword(email: Editable?, password: Editable?) {
+        launchFlowAuth(
+            flowResultAuth = authEmailAndPassword.invoke(
+                email = email.toString().trim(),
+                password = password.toString().trim()
+            ),
+            nameFunc = "authEmailAndPassword"
+        )
+    }
+
+    // endregion
+    // region Private Methods
+
+    private fun authWithGoogle(result: ActivityResult) {
+        launchFlowAuth(
+            flowResultAuth = authGoogle.invoke(result),
+            nameFunc = "authWithGoogle"
+        )
     }
 
     private fun launchFlowAuth(
@@ -72,25 +82,7 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    private fun authWithGoogle(result: ActivityResult) {
-        launchFlowAuth(
-            flowResultAuth = authGoogle.invoke(result),
-            nameFunc = "authWithGoogle"
-        )
-    }
-
-    fun authEmailAndPassword(email: Editable?, password: Editable?) {
-        if (email.isNullOrBlank()) return
-        if (password.isNullOrBlank()) return
-
-        launchFlowAuth(
-            flowResultAuth = authEmailAndPassword.invoke(email.toString(), password.toString()),
-            nameFunc = "authEmailAndPassword"
-        )
-    }
-
     // endregion
-
     // region Companion Object
 
     companion object {
@@ -98,7 +90,6 @@ class LoginViewModel @Inject constructor(
     }
 
     // endregion
-
     // region Inner Classes & Interfaces
 
     sealed class LoginEvent {
@@ -108,5 +99,4 @@ class LoginViewModel @Inject constructor(
     }
 
     // endregion
-
 }

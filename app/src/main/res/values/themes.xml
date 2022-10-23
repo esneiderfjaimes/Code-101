@@ -2,6 +2,7 @@
 
     <color name="filter">#40FFFFFF</color>
     <color name="background">@color/white</color>
+    <color name="bg_email_and_password">@color/md_theme_light_tertiary</color>
 
     <!-- Base application theme. -->
     <style name="Base.Theme.Code101" parent="Theme.Material3.DayNight.NoActionBar">

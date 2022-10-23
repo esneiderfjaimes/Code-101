@@ -5,57 +5,41 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.addCallback
-import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.NavOptions
-import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import red.code101.app.R
 import red.code101.app.databinding.FragmentMainBinding
 import red.code101.app.databinding.NavigationRailFabBinding
+import red.code101.app.utils.getMenuItem
+import red.code101.app.utils.navigateTo
+import red.code101.app.utils.onBackPressed
 import red.code101.app.utils.window.WindowUtils.Companion.fillMarginWhitSetDecorFitsSystemWindows
+
+private typealias Binding = FragmentMainBinding
+private typealias Directions = HomeFragmentDirections
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
-
     // region Fields
 
     private val viewModel: MainViewModel by viewModels()
 
-    private var _binding: FragmentMainBinding? = null
+    private var _binding: Binding? = null
     private val binding get() = _binding!!
 
     // endregion
-
     // region Override Methods & Callbacks
 
     override fun onCreateView(i: LayoutInflater, c: ViewGroup?, b: Bundle?): View {
-        requireActivity().onBackPressedDispatcher.addCallback(this) {
+        onBackPressed {
             activity?.moveTaskToBack(true)
         }
-        _binding = FragmentMainBinding.inflate(i, c, false).apply {
+        _binding = Binding.inflate(i, c, false).apply {
             fillMarginWhitSetDecorFitsSystemWindows(container)
-            viewModel.onUserPhoto(requireContext()) { bitmap ->
-                if (topBar.menu.size() > 0) {
-                    topBar.menu[0].icon = BitmapDrawable(resources, bitmap)
-                }
-                navRail?.headerView?.let {
-                    NavigationRailFabBinding.bind(it).fabAccount.apply {
-                        setImageBitmap(bitmap)
-                        imageTintList = null
-                    }
-                }
-            }
-            navRail?.headerView?.let {
-                NavigationRailFabBinding.bind(it).fabAccount.setOnClickListener {
-                    val navOptions = NavOptions.Builder()
-                        .setPopUpTo(R.id.loginFragment, true)
-                        .build()
-                    findNavController().navigate(R.id.loginFragment, null, navOptions)
-                }
-            }
+
+            // top app bar
+            setupTopAppBar()
         }
         return binding.root
     }
@@ -66,5 +50,26 @@ class HomeFragment : Fragment() {
     }
 
     // endregion
+    // region Private Methods
 
+    private fun Binding.setupTopAppBar() {
+        val fabAccount = navRail?.headerView?.let {
+            NavigationRailFabBinding.bind(it).fabAccount
+        }
+
+        topBar.setOnMenuItemClickListener { menu ->  // Portrait Account
+            if (menu.itemId == R.id.page_account) {
+                navigateTo(Directions.toAccount())
+                true
+            } else false
+        }
+        viewModel.onUserPhoto(requireContext()) { bitmap ->
+            topBar.getMenuItem(0)?.icon = BitmapDrawable(resources, bitmap)
+            fabAccount?.setImageBitmap(bitmap)
+            fabAccount?.imageTintList = null
+        }
+        fabAccount?.setOnClickListener { navigateTo(Directions.toAccount()) }
+    }
+
+    // endregion
 }

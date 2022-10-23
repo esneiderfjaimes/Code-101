@@ -17,6 +17,7 @@ class GlideUtils {
     companion object {
         @JvmStatic
         fun fromUrl(context: Context, url: String?, onResourceReady: (Bitmap) -> Unit) {
+            if (url.isNullOrBlank()) return
             Glide.with(context).asBitmap()
                 .load(url)
                 .circleCrop()

@@ -104,7 +104,7 @@ ext {
             insets_ui           : "com.google.accompanist:accompanist-insets-ui:$accompanist_version",
     ]
 
-    def firebase_version = '30.5.0'
+    def firebase_version = '31.0.1'
 
     Firebase = [
             bom      : "com.google.firebase:firebase-bom:$firebase_version",
@@ -165,7 +165,7 @@ ext {
 
     // Glide
 
-    def glideVersion = '4.14.1'
+    def glideVersion = '4.14.2'
 
     Bumptech = [
             glide         : "com.github.bumptech.glide:glide:$glideVersion",

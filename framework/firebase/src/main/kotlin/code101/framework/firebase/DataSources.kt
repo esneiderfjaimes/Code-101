@@ -11,5 +11,7 @@ interface AuthDataSource {
     fun authWithGoogleIntent(context: Context): Intent?
     fun authWithGoogle(activityResult: ActivityResult): Flow<Auth>
     fun signInWithEmailAndPassword(email: String, password: String): Flow<Auth>
+    fun createUserWithEmailAndPassword(email: String, password: String): Flow<Auth>
+    fun linkWithGoogle(activityResult: ActivityResult): Flow<Auth>
     fun signOut()
 }

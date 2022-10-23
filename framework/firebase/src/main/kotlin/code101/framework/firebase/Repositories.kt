@@ -8,6 +8,7 @@ import code101.framework.firebase.utils.UtilsException.Companion.toPrimitive
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
@@ -40,14 +41,26 @@ class AuthRepository @Inject constructor(private val firebaseAuth: FirebaseAuth)
     }
 
     override fun authWithGoogle(activityResult: ActivityResult) = baseFlowAuth {
+        firebaseAuth.signInWithCredential(googleCredential(activityResult)).await()
+    }
+
+    private fun googleCredential(activityResult: ActivityResult): AuthCredential {
         val idToken = GoogleSignIn.getSignedInAccountFromIntent(activityResult.data)
             .getResult(ApiException::class.java)!!.idToken
-        firebaseAuth.signInWithCredential(GoogleAuthProvider.getCredential(idToken, null))
-            .await()
+        return GoogleAuthProvider.getCredential(idToken, null)
     }
 
     override fun signInWithEmailAndPassword(email: String, password: String) = baseFlowAuth {
         firebaseAuth.signInWithEmailAndPassword(email, password).await()
+    }
+
+    override fun createUserWithEmailAndPassword(email: String, password: String) = baseFlowAuth {
+        firebaseAuth.createUserWithEmailAndPassword(email, password).await()
+    }
+
+    override fun linkWithGoogle(activityResult: ActivityResult) = baseFlowAuth {
+        firebaseAuth.currentUser?.linkWithCredential(googleCredential(activityResult))
+            ?.await() ?: throw Throwable("No data:[Auth]")
     }
 
     private fun baseFlowAuth(scope: FlowAuth): Flow<Auth> = flow {

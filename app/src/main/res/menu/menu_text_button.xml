@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <item
+        android:id="@+id/register"
+        android:enabled="true"
+        android:title="@string/register"
+        app:actionLayout="@layout/view_menu_text_button"
+        android:text="@string/register"
+        app:showAsAction="ifRoom" />
+</menu>

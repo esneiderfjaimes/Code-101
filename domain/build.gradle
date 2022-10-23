@@ -5,6 +5,7 @@ plugins {
 
 android {
     compileSdk 31
+    namespace 'code101.domain'
 }
 
 dependencies {

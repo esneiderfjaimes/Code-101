@@ -3,18 +3,44 @@
     <string name="hi">Hi!</string>
 
     <!--Login-->
+    <string name="login">Login</string>
+
+    <string name="email_id">Email ID</string>
+    <string name="password">Password</string>
+    <string name="forgot">Forgot?</string>
+    <string name="or_login_with">Or, login with…</string>
     <string name="sign_in_with_google">Sign in with Google</string>
-    <string name="sign_in">Sign In</string>
+    <string name="new_to_code_101">New to Code 101?</string>
+
     <string name="you_logged_in_as">you logged in as</string>
-    <string name="account">Account</string>
+    <!--End Login-->
+
+    <!--Register-->
+    <string name="register">Register</string>
+
+    <string name="confirm_password">Confirm Password</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <!--End Register-->
+
+    <!--Home-->
     <string name="home">Home</string>
     <string name="search">Search</string>
     <string name="settings">Settings</string>
-    <string name="register">Register</string>
-    <string name="login">Login</string>
-    <string name="password">Password</string>
-    <string name="email_id">Email ID</string>
-    <string name="forgot">Forgot?</string>
-    <string name="new_to_code_101">New to Code 101?</string>
-    <string name="or_login_with">Or, login with...</string>
+    <!--End Home-->
+
+    <!--Account-->
+    <string name="account">Account</string>
+    <string name="connected">Connected</string>
+    <string name="authentication">AUTHENTICATION</string>
+    <string name="connections">Connections</string>
+    <string name="other_sign_in_methods">Other sign in methods</string>
+    <string name="sign_out">Sign Out</string>
+    <!--End Account-->
+
+    <!--Providers-->
+    <string name="label_email_and_password">Email/Password</string>
+    <string name="label_google">Google</string>
+    <string name="label_facebook">Facebook</string>
+    <!--End Providers-->
+
 </resources>

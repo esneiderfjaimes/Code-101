@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="red.code101.app.ui.auth.register.RegisterViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.auth.login.LoginFragment">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topBar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:menu="@menu/menu_text_button"
+            app:navigationIcon="@drawable/ic_round_arrow_back_ios_new_24" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:fillViewport="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/topBar">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/parent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="32dp"
+                    android:text="@string/register"
+                    android:textAppearance="@style/TextAppearance.Material3.HeadlineLarge"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/email_inputLayout"
+                    app:layout_constraintEnd_toStartOf="@+id/line2"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintStart_toStartOf="@+id/line1"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/email_inputLayout"
+                    style="?attr/textInputFilledStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:hint="@string/email_id"
+                    android:minHeight="0dp"
+                    android:textColorHint="#C0C0C0"
+                    app:boxBackgroundColor="?attr/colorSurface"
+                    app:hintTextAppearance="@style/MyHintStyle"
+                    app:layout_constraintBottom_toTopOf="@+id/password_inputLayout"
+                    app:layout_constraintEnd_toStartOf="@+id/line2"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="@+id/line1"
+                    app:startIconDrawable="@drawable/ic_round_alternate_email_24"
+                    app:startIconTint="#C0C0C0">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/email_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:nextFocusForward="@id/password_input"
+                        android:textColorHighlight="@color/white"
+                        android:textColorHint="#546E7A"
+                        app:endIconMode="clear_text" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/password_inputLayout"
+                    style="?attr/textInputFilledStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:hint="@string/password"
+                    android:minHeight="0dp"
+                    android:textColorHint="#C0C0C0"
+                    app:boxBackgroundColor="?attr/colorSurface"
+                    app:layout_constraintBottom_toTopOf="@+id/confirm_password_inputLayout"
+                    app:layout_constraintEnd_toStartOf="@+id/line2"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="@+id/line1"
+                    app:startIconDrawable="@drawable/lock_black_24dp"
+                    app:startIconTint="#C0C0C0">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/password_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword"
+                        android:maxLines="1"
+                        android:nextFocusForward="@id/confirm_password_inputLayout" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/confirm_password_inputLayout"
+                    style="?attr/textInputFilledStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:hint="@string/confirm_password"
+                    android:minHeight="0dp"
+                    android:textColorHint="#C0C0C0"
+                    app:boxBackgroundColor="?attr/colorSurface"
+                    app:layout_constraintBottom_toTopOf="@+id/registerInEmail_btn"
+                    app:layout_constraintEnd_toStartOf="@+id/line2"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="@+id/line1"
+                    app:startIconDrawable="@drawable/lock_black_24dp"
+                    app:startIconTint="#C0C0C0">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/confirm_password_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword"
+                        android:maxLines="1"
+                        android:nextFocusForward="@id/registerInEmail_btn" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/registerInEmail_btn"
+                    style="@style/Widget.Material3.Button.Icon"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:onClick="@{v-> viewModel.registerEmailAndPassword(emailInput.getText(), passwordInput.getText(), confirmPasswordInput.getText())}"
+                    android:text="@string/register"
+                    app:layout_constraintBottom_toTopOf="@+id/register_btn"
+                    app:layout_constraintEnd_toStartOf="@+id/line2"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="@+id/line1"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearance33" />
+
+                <TextView
+                    android:id="@+id/subtitle_go_register"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/already_have_an_account"
+                    app:layout_constraintBottom_toBottomOf="@+id/register_btn"
+                    app:layout_constraintEnd_toStartOf="@+id/register_btn"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="@+id/line1"
+                    app:layout_constraintTop_toTopOf="@+id/register_btn" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/register_btn"
+                    style="@style/Widget.Material3.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:padding="4dp"
+                    android:paddingLeft="0dp"
+                    android:paddingTop="0dp"
+                    android:paddingRight="0dp"
+                    android:paddingBottom="0dp"
+                    android:text="@string/login"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/line4"
+                    app:layout_constraintEnd_toStartOf="@+id/line2"
+                    app:layout_constraintStart_toEndOf="@+id/subtitle_go_register" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/line1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.15" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/line2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.85" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/line4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_end="48dp" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
