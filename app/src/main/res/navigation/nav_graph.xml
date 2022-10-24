@@ -16,6 +16,9 @@
             app:launchSingleTop="true"
             app:popUpTo="@+id/loginFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/showForgotPassword"
+            app:destination="@id/forgotPasswordFragment" />
     </fragment>
 
     <fragment
@@ -31,6 +34,12 @@
             app:popUpToInclusive="true" />
     </fragment>
 
+    <dialog
+        android:id="@+id/forgotPasswordFragment"
+        android:name="red.code101.app.ui.auth.forgot_password.ForgotPasswordFragment"
+        android:label="ForgotPasswordFragment"
+        tools:layout="@layout/fragment_auth_forgot_password" />
+
     <fragment
         android:id="@+id/homeFragment"
         android:name="red.code101.app.ui.main.HomeFragment"
@@ -45,7 +54,7 @@
         android:id="@+id/accountFragment"
         android:name="red.code101.app.ui.account.AccountFragment"
         android:label="AccountFragment"
-        tools:layout="@layout/fragment_account" >
+        tools:layout="@layout/fragment_account">
         <action
             android:id="@+id/toLogin"
             app:destination="@id/loginFragment" />

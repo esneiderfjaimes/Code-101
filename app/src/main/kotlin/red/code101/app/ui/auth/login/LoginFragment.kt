@@ -5,14 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
-import androidx.core.view.get
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
-import com.google.android.material.button.MaterialButton
 import dagger.hilt.android.AndroidEntryPoint
-import red.code101.app.R
 import red.code101.app.databinding.FragmentAuthLoginBinding
 import red.code101.app.ui.auth.AuthConstants
 import red.code101.app.ui.auth.login.LoginViewModel.LoginEvent
@@ -43,13 +40,11 @@ class LoginFragment : Fragment() {
     }
 
     override fun onCreateView(i: LayoutInflater, c: ViewGroup?, b: Bundle?): View {
+        onBackPressed { viewModel.goBack() }
         _binding = Binding.inflate(i, c, false).apply {
             fillMarginWhitSetDecorFitsSystemWindows()
-            viewModel = this@LoginFragment.viewModel
+            loginViewModel = viewModel
             lifecycleOwner = this@LoginFragment
-
-            // top app bar
-            setupTopAppBar()
 
             passwordInput.doOnTextChanged { text, _, _, _ ->
                 binding.forgotBtn.visibility =
@@ -69,34 +64,24 @@ class LoginFragment : Fragment() {
     // endregion
     // region Private Methods
 
-    private fun back() {
-        setFragmentResult(
-            requestKey = AuthConstants.RequestKeyAuth,
-            result = bundleOf(AuthConstants.BundleKeyIsCancel to true)
-        )
-        navigateBack()
-    }
-
-    private fun Binding.setupTopAppBar() {
-        onBackPressed { back() }
-        topBar.setNavigationOnClickListener { back() }
-        (topBar.menu[0].actionView as MaterialButton).apply {
-            text = getString(R.string.register)
-            setOnClickListener {
-                navigateTo(Directions.toRegister())
-            }
-        }
-    }
-
     private fun observerEvent(event: LoginEvent) {
         when (event) {
+            is LoginEvent.GoBack -> {
+                setFragmentResult(
+                    requestKey = AuthConstants.RequestKeyAuth,
+                    result = bundleOf(AuthConstants.BundleKeyIsCancel to event.resultIsCancel)
+                )
+                navigateBack()
+            }
+            LoginEvent.GoRegister -> navigateTo(Directions.toRegister())
+            LoginEvent.ShowForgotPassword -> navigateTo(Directions.showForgotPassword())
             is LoginEvent.ShowError -> {
                 event.error.message?.let { toast(it) }
             }
             is LoginEvent.SuccessfulAuth -> {
                 snackbarAuth(auth = event.auth)
+                viewModel.goBack(false)
             }
-            LoginEvent.SignUp -> Unit
         }
     }
 

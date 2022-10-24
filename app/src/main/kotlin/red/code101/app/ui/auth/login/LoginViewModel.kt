@@ -3,7 +3,6 @@ package red.code101.app.ui.auth.login
 import android.content.Intent
 import android.text.Editable
 import android.util.Log
-import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
@@ -26,7 +25,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val authGoogle: AuthGoogleUseCase,
-    private val authEmailAndPassword: AuthEmailAndPasswordUseCase,
+    private val authEmailAndPassword: AuthEmailAndPasswordUseCase
 ) : ViewModel() {
     // region Fields
 
@@ -40,8 +39,23 @@ class LoginViewModel @Inject constructor(
     fun initAuthWithGoogle(fragment: Fragment) {
         result =
             fragment.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                authWithGoogle(it)
+                launchFlowAuth(
+                    flowResultAuth = authGoogle.invoke(it),
+                    nameFunc = "authWithGoogle"
+                )
             }
+    }
+
+    fun goBack(resultIsCancel: Boolean = true) {
+        _event.postValue(LoginEvent.GoBack(resultIsCancel))
+    }
+
+    fun goRegister() {
+        _event.postValue(LoginEvent.GoRegister)
+    }
+
+    fun goForgotPassword() {
+        _event.postValue(LoginEvent.ShowForgotPassword)
     }
 
     fun launchSignInGoogle() {
@@ -60,13 +74,6 @@ class LoginViewModel @Inject constructor(
 
     // endregion
     // region Private Methods
-
-    private fun authWithGoogle(result: ActivityResult) {
-        launchFlowAuth(
-            flowResultAuth = authGoogle.invoke(result),
-            nameFunc = "authWithGoogle"
-        )
-    }
 
     private fun launchFlowAuth(
         flowResultAuth: Flow<Auth>,
@@ -93,9 +100,11 @@ class LoginViewModel @Inject constructor(
     // region Inner Classes & Interfaces
 
     sealed class LoginEvent {
+        data class GoBack(val resultIsCancel: Boolean = true) : LoginEvent()
+        object GoRegister : LoginEvent()
+        object ShowForgotPassword : LoginEvent()
         data class SuccessfulAuth(val auth: Auth) : LoginEvent()
         data class ShowError(val error: Throwable) : LoginEvent()
-        object SignUp : LoginEvent()
     }
 
     // endregion

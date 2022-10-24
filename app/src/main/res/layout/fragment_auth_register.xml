@@ -6,7 +6,7 @@
     <data>
 
         <variable
-            name="viewModel"
+            name="registerViewModel"
             type="red.code101.app.ui.auth.register.RegisterViewModel" />
     </data>
 
@@ -23,7 +23,10 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:menu="@menu/menu_text_button"
-            app:navigationIcon="@drawable/ic_round_arrow_back_ios_new_24" />
+            app:mtbLabel="@{@string/login}"
+            app:mtbOnClick="@{registerViewModel::goLogin}"
+            app:navigationIcon="@drawable/ic_round_arrow_back_ios_new_24"
+            app:navigationOnClick="@{()->registerViewModel.goBack(true)}" />
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -138,7 +141,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
-                    android:onClick="@{v-> viewModel.registerEmailAndPassword(emailInput.getText(), passwordInput.getText(), confirmPasswordInput.getText())}"
+                    android:onClick="@{v-> registerViewModel.registerEmailAndPassword(emailInput.getText(), passwordInput.getText(), confirmPasswordInput.getText())}"
                     android:text="@string/register"
                     app:layout_constraintBottom_toTopOf="@+id/register_btn"
                     app:layout_constraintEnd_toStartOf="@+id/line2"
@@ -159,23 +162,13 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/register_btn"
-                    style="@style/Widget.Material3.Button.TextButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:insetTop="0dp"
-                    android:insetBottom="0dp"
-                    android:minWidth="0dp"
-                    android:minHeight="0dp"
-                    android:padding="4dp"
-                    android:paddingLeft="0dp"
-                    android:paddingTop="0dp"
-                    android:paddingRight="0dp"
-                    android:paddingBottom="0dp"
+                    style="@style/TextButtonSmall"
+                    android:onClick="@{v-> registerViewModel.goLogin()}"
                     android:text="@string/login"
-                    android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@+id/line4"
                     app:layout_constraintEnd_toStartOf="@+id/line2"
-                    app:layout_constraintStart_toEndOf="@+id/subtitle_go_register" />
+                    app:layout_constraintStart_toEndOf="@+id/subtitle_go_register"
+                    tools:ignore="TouchTargetSizeCheck" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/line1"

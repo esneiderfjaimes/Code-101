@@ -58,6 +58,10 @@ class AuthRepository @Inject constructor(private val firebaseAuth: FirebaseAuth)
         firebaseAuth.createUserWithEmailAndPassword(email, password).await()
     }
 
+    override fun sendPasswordResetEmail(email: String): Flow<Boolean> = flow {
+        emit(firebaseAuth.sendPasswordResetEmail(email).isSuccessful)
+    }
+
     override fun linkWithGoogle(activityResult: ActivityResult) = baseFlowAuth {
         firebaseAuth.currentUser?.linkWithCredential(googleCredential(activityResult))
             ?.await() ?: throw Throwable("No data:[Auth]")

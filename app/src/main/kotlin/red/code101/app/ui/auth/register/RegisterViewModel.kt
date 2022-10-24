@@ -28,6 +28,14 @@ class RegisterViewModel @Inject constructor(
     // endregion
     // region Public Methods
 
+    fun goBack(resultIsCancel: Boolean = true) {
+        _event.postValue(RegisterEvent.GoBack(resultIsCancel))
+    }
+
+    fun goLogin() {
+        _event.postValue(RegisterEvent.GoLogin)
+    }
+
     fun registerEmailAndPassword(
         email: Editable?,
         password: Editable?,
@@ -51,16 +59,17 @@ class RegisterViewModel @Inject constructor(
     // region Companion Object
 
     companion object {
-        const val tag = "LoginFragment"
+        const val tag = "RegisterViewModel"
     }
 
     // endregion
     // region Inner Classes & Interfaces
 
     sealed class RegisterEvent {
+        data class GoBack(val resultIsCancel: Boolean = true) : RegisterEvent()
+        object GoLogin : RegisterEvent()
         data class SuccessfulAuth(val auth: Auth) : RegisterEvent()
         data class ShowError(val error: Throwable) : RegisterEvent()
-        object SignUp : RegisterEvent()
     }
 
     // endregion

@@ -45,6 +45,13 @@ class CreateEmailAuthPasswordUserCase @Inject constructor(private val repository
     }
 }
 
+class SendPasswordResetEmailUserCase @Inject constructor(private val repository: AuthRepository) {
+    fun invoke(email: String): Flow<Boolean> {
+        if (email.isBlank()) return emitThrow("Email is blank")
+        return repository.sendPasswordResetEmail(email)
+    }
+}
+
 class LinkGoogleUseCase @Inject constructor(
     @ApplicationContext
     private val context: Context,

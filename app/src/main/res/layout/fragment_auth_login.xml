@@ -6,7 +6,7 @@
     <data>
 
         <variable
-            name="viewModel"
+            name="loginViewModel"
             type="red.code101.app.ui.auth.login.LoginViewModel" />
     </data>
 
@@ -14,7 +14,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.auth.login.LoginFragment">
-
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -36,7 +35,10 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:menu="@menu/menu_text_button"
-                    app:navigationIcon="@drawable/ic_round_arrow_back_ios_new_24" />
+                    app:mtbLabel="@{@string/register}"
+                    app:mtbOnClick="@{loginViewModel::goRegister}"
+                    app:navigationIcon="@drawable/ic_round_arrow_back_ios_new_24"
+                    app:navigationOnClick="@{()->loginViewModel.goBack(true)}" />
 
                 <TextView
                     android:id="@+id/title"
@@ -113,7 +115,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
-                    android:onClick="@{v-> viewModel.authEmailAndPassword(emailInput.getText(), passwordInput.getText())}"
+                    android:onClick="@{v-> loginViewModel.authEmailAndPassword(emailInput.getText(), passwordInput.getText())}"
                     android:text="@string/login"
                     app:layout_constraintBottom_toTopOf="@+id/subtitle_other_means_of_authentication"
                     app:layout_constraintEnd_toStartOf="@+id/line2"
@@ -138,7 +140,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
-                    android:onClick="@{v-> viewModel.launchSignInGoogle()}"
+                    android:onClick="@{v-> loginViewModel.launchSignInGoogle()}"
                     android:text="@string/sign_in_with_google"
                     android:textColor="?attr/colorOnSurface"
                     app:icon="@drawable/ic_provider_google"
@@ -163,40 +165,20 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/register_btn"
-                    style="@style/Widget.Material3.Button.TextButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:insetTop="0dp"
-                    android:insetBottom="0dp"
-                    android:minWidth="0dp"
-                    android:minHeight="0dp"
-                    android:padding="4dp"
-                    android:paddingLeft="0dp"
-                    android:paddingTop="0dp"
-                    android:paddingRight="0dp"
-                    android:paddingBottom="0dp"
+                    style="@style/TextButtonSmall"
+                    android:onClick="@{v-> loginViewModel.goRegister()}"
                     android:text="@string/register"
-                    android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@+id/line4"
                     app:layout_constraintEnd_toStartOf="@+id/line2"
-                    app:layout_constraintStart_toEndOf="@+id/subtitle_go_register" />
+                    app:layout_constraintStart_toEndOf="@+id/subtitle_go_register"
+                    tools:ignore="TouchTargetSizeCheck" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/forgot_btn"
-                    style="@style/Widget.Material3.Button.TextButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:insetTop="0dp"
-                    android:insetBottom="0dp"
-                    android:minWidth="0dp"
-                    android:minHeight="0dp"
-                    android:padding="4dp"
-                    android:paddingLeft="0dp"
-                    android:paddingTop="0dp"
-                    android:paddingRight="0dp"
-                    android:paddingBottom="0dp"
+                    style="@style/TextButtonSmall"
+                    android:minHeight="48dp"
+                    android:onClick="@{v-> loginViewModel.goForgotPassword()}"
                     android:text="@string/forgot"
-                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="@+id/password_inputLayout"
                     app:layout_constraintEnd_toEndOf="@+id/password_inputLayout"
                     app:layout_constraintTop_toTopOf="@+id/password_inputLayout" />

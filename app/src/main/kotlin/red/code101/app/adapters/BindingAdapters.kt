@@ -1,15 +1,19 @@
 package red.code101.app.adapters
 
 import android.widget.ImageView
+import androidx.appcompat.widget.Toolbar
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import code101.domain.AuthProvider
 import com.bumptech.glide.Glide
-import red.code101.app.adapters.recycler.AuthProviderAdapter
+import com.google.android.material.button.MaterialButton
+import red.code101.app.R
 import red.code101.app.adapters.recycler.AuthLinkProviderAdapter
+import red.code101.app.adapters.recycler.AuthProviderAdapter
 import red.code101.app.ui.auth.LinkProvider
+import red.code101.app.utils.getMenuItem
 
 object BindingAdapters {
 
@@ -56,6 +60,44 @@ object BindingAdapters {
         )
         view.layoutManager = object : GridLayoutManager(view.context, 2) {
             override fun canScrollVertically(): Boolean = false
+        }
+    }
+
+    @BindingAdapter("mcbOnClick")
+    @JvmStatic
+    fun setMenuCloseButtonOnClickListener(
+        view: Toolbar,
+        onClick: () -> Unit
+    ) {
+        view.setOnMenuItemClickListener {
+            if (it.itemId == R.id.close) {
+                onClick.invoke()
+                true
+            } else false
+        }
+    }
+
+    @BindingAdapter("navigationOnClick")
+    @JvmStatic
+    fun setNavigationOnClickListener(
+        view: Toolbar,
+        onClick: () -> Unit
+    ) {
+        view.setNavigationOnClickListener {
+            onClick.invoke()
+        }
+    }
+
+    @BindingAdapter("app:mtbLabel", "app:mtbOnClick")
+    @JvmStatic
+    fun loadToolbarMenuTextButton(
+        view: Toolbar,
+        label: String,
+        onClick: () -> Unit
+    ) {
+        (view.getMenuItem(0)?.actionView as MaterialButton?)?.apply {
+            text = label
+            setOnClickListener { onClick.invoke() }
         }
     }
 }
