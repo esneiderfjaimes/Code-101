@@ -8,6 +8,11 @@ interface AuthLinkMultipleProvidersDataSource {
     /**
      * Link with Google
      */
+    fun linkWithPassword(email: String, password: String): Flow<Auth>
+
+    /**
+     * Link with Google
+     */
     fun linkWithGoogle(activityResult: ActivityResult): Flow<Auth>
 
     /**

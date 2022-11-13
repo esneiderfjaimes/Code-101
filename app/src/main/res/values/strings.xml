@@ -46,6 +46,8 @@
     <string name="send_password_reset_email">Send password reset email</string>
     <string name="close">Close</string>
     <string name="unlink">Unlink</string>
+    <string name="link_password">Link email and password</string>
+    <string name="link">Link</string>
     <!--End Providers-->
 
 </resources>

@@ -36,8 +36,8 @@ class AccountFragment : Fragment() {
     }
 
     override fun onCreateView(i: LayoutInflater, c: ViewGroup?, b: Bundle?): View? {
-        if (viewModel.user == null) {
-            // Use the Kotlin extension in the fragment-ktx artifact
+        viewModel.reloadUser()
+        if (viewModel.user.value == null) {
             setFragmentResultListener(AuthConstants.RequestKeyAuth) { _, bundle ->
                 if (bundle.getBoolean(AuthConstants.BundleKeyIsCancel, false)) {
                     navigateBack()
@@ -46,9 +46,13 @@ class AccountFragment : Fragment() {
             navigateTo(Directions.toLogin())
             return null
         }
+        setFragmentResultListener(AuthConstants.RequestKeyRequiresReload) { _, _ ->
+            viewModel.reloadUser()
+        }
         _binding = Binding.inflate(i, c, false).apply {
             fillMarginWhitSetDecorFitsSystemWindows()
             accountViewModel = viewModel
+            auth = viewModel.user
             lifecycleOwner = this@AccountFragment
             onUnlinkClick = viewModel::onUnlink
             onProviderClick = viewModel::onProviderClick
@@ -75,6 +79,9 @@ class AccountFragment : Fragment() {
                 navigateBack()
             }
             is AccountEvent.ShowSnack -> toast(event.msg)
+            is AccountEvent.ShowLinkPassword -> {
+                navigateTo(Directions.showLinkPassword())
+            }
         }
     }
 

@@ -11,6 +11,14 @@
 
         <import type="kotlin.Unit" />
 
+        <import type="androidx.lifecycle.LiveData" />
+
+        <import type="code101.domain.Auth" />
+
+        <variable
+            name="auth"
+            type="LiveData&lt;Auth>" />
+
         <variable
             name="onUnlinkClick"
             type="Function1&lt;String,Unit>" />
@@ -78,10 +86,10 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:padding="16dp"
-                        android:text="@{accountViewModel.user.name}"
+                        android:text="@{auth.name}"
                         android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
                         app:drawableTopCompat="@drawable/default_profile"
-                        app:photoUrl='@{accountViewModel.user != null ? accountViewModel.user.photoUrl.toString() : ""}'
+                        app:photoUrl='@{auth != null ? auth.photoUrl.toString() : ""}'
                         tools:text="Esneider Jaimes" />
                 </com.google.android.material.card.MaterialCardView>
 
@@ -104,7 +112,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:providers="@{accountViewModel.user.authProviders}"
+                    app:providers="@{auth.authProviders}"
                     app:onUnlink="@{onUnlinkClick}"
                     tools:itemCount="3"
                     tools:listitem="@layout/item_auth_provider" />
@@ -122,7 +130,7 @@
                     android:clipToPadding="false"
                     android:paddingVertical="8dp"
                     app:onProviderClick="@{onProviderClick}"
-                    app:providersMerge="@{accountViewModel.user.authProviders}"
+                    app:providersMerge="@{auth.authProviders}"
                     tools:itemCount="2"
                     tools:listitem="@layout/item_auth_link_provider"
                     tools:spanCount="2" />

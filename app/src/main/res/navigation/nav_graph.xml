@@ -40,6 +40,12 @@
         android:label="ForgotPasswordFragment"
         tools:layout="@layout/fragment_auth_forgot_password" />
 
+    <dialog
+        android:id="@+id/linkPasswordFragment"
+        android:name="red.code101.app.ui.auth.link_password.LinkPasswordFragment"
+        android:label="LinkPasswordFragment"
+        tools:layout="@layout/fragment_auth_link_password" />
+
     <fragment
         android:id="@+id/homeFragment"
         android:name="red.code101.app.ui.main.HomeFragment"
@@ -58,5 +64,8 @@
         <action
             android:id="@+id/toLogin"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/showLinkPassword"
+            app:destination="@id/linkPasswordFragment" />
     </fragment>
 </navigation>

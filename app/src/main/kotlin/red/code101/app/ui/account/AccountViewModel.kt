@@ -13,6 +13,7 @@ import code101.data.auth.CurrentAuthUseCase
 import code101.data.auth.LinkGoogleUseCase
 import code101.data.auth.SignOutUseCase
 import code101.data.auth.UnLinkUseCase
+import code101.domain.Auth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
@@ -37,7 +38,12 @@ class AccountViewModel @Inject constructor(
     private val _event = MutableLiveData<AccountEvent>()
     val event: LiveData<AccountEvent> get() = _event
 
-    val user get() = currentUser.invoke()
+    private val _user = MutableLiveData(currentUser.invoke())
+    val user: LiveData<Auth?> get() = _user
+
+    fun reloadUser() {
+        _user.value = currentUser.invoke()
+    }
 
     // endregion
     // region Public Methods
@@ -49,7 +55,9 @@ class AccountViewModel @Inject constructor(
                     linkGoogleUseCase.invoke(it).catch { exception ->
                         Log.e(tag, "initAuthWithGoogle:catch", exception)
                         _event.postValue(AccountEvent.ShowError(exception))
-                    }.flowOn(Dispatchers.IO).firstOrNull()
+                    }.flowOn(Dispatchers.IO).firstOrNull()?.let {
+                        _user.value = currentUser.invoke()
+                    }
                 }
             }
     }
@@ -61,8 +69,9 @@ class AccountViewModel @Inject constructor(
 
     fun onProviderClick(linkProvider: LinkProvider) {
         when (linkProvider) {
-            LinkProvider.EmailAndPassword ->
-                _event.postValue(AccountEvent.ShowSnack("TODO: link email and password"))
+            LinkProvider.EmailAndPassword -> {
+                _event.postValue(AccountEvent.ShowLinkPassword)
+            }
             LinkProvider.Google -> launchSignInGoogle()
             LinkProvider.Facebook ->
                 _event.postValue(AccountEvent.ShowSnack("TODO: link facebook"))
@@ -74,7 +83,9 @@ class AccountViewModel @Inject constructor(
             unLink.invoke(providerId).catch { exception ->
                 Log.e(tag, "initAuthWithGoogle:catch", exception)
                 _event.postValue(AccountEvent.ShowError(exception))
-            }.flowOn(Dispatchers.IO).firstOrNull()
+            }.flowOn(Dispatchers.IO).firstOrNull()?.let {
+                _user.value = currentUser.invoke()
+            }
         }
     }
 
@@ -98,6 +109,7 @@ class AccountViewModel @Inject constructor(
     sealed class AccountEvent {
         data class ShowError(val error: Throwable) : AccountEvent()
         data class ShowSnack(val msg: String) : AccountEvent()
+        object ShowLinkPassword : AccountEvent()
         object SignOut : AccountEvent()
     }
 
