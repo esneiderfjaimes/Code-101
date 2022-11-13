@@ -3,7 +3,7 @@ package red.code101.app.ui.main
 import android.content.Context
 import android.graphics.Bitmap
 import androidx.lifecycle.ViewModel
-import code101.data.CurrentAuthUseCase
+import code101.data.auth.CurrentAuthUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import red.code101.app.utils.GlideUtils
 import javax.inject.Inject

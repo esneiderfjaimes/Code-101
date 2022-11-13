@@ -48,9 +48,10 @@ class AccountFragment : Fragment() {
         }
         _binding = Binding.inflate(i, c, false).apply {
             fillMarginWhitSetDecorFitsSystemWindows()
-            viewModel = this@AccountFragment.viewModel
+            accountViewModel = viewModel
             lifecycleOwner = this@AccountFragment
-            onProviderClick = this@AccountFragment.viewModel::onProviderClick
+            onUnlinkClick = viewModel::onUnlink
+            onProviderClick = viewModel::onProviderClick
 
             // top app bar
             setupTopAppBar()

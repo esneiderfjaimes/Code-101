@@ -9,9 +9,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import code101.data.CurrentAuthUseCase
-import code101.data.LinkGoogleUseCase
-import code101.data.SignOutUseCase
+import code101.data.auth.CurrentAuthUseCase
+import code101.data.auth.LinkGoogleUseCase
+import code101.data.auth.SignOutUseCase
+import code101.data.auth.UnLinkUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
@@ -26,6 +27,7 @@ import javax.inject.Inject
 class AccountViewModel @Inject constructor(
     private val currentUser: CurrentAuthUseCase,
     private val linkGoogleUseCase: LinkGoogleUseCase,
+    private val unLink: UnLinkUseCase,
     private val signOut: SignOutUseCase
 ) : ViewModel() {
     // region Fields
@@ -64,6 +66,15 @@ class AccountViewModel @Inject constructor(
             LinkProvider.Google -> launchSignInGoogle()
             LinkProvider.Facebook ->
                 _event.postValue(AccountEvent.ShowSnack("TODO: link facebook"))
+        }
+    }
+
+    fun onUnlink(providerId: String) {
+        viewModelScope.launch {
+            unLink.invoke(providerId).catch { exception ->
+                Log.e(tag, "initAuthWithGoogle:catch", exception)
+                _event.postValue(AccountEvent.ShowError(exception))
+            }.flowOn(Dispatchers.IO).firstOrNull()
         }
     }
 

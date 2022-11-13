@@ -1,6 +1,8 @@
 package red.code101.app.adapters
 
+import android.graphics.drawable.Drawable
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.GridLayoutManager
@@ -8,11 +10,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import code101.domain.AuthProvider
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.google.android.material.button.MaterialButton
 import red.code101.app.R
 import red.code101.app.adapters.recycler.AuthLinkProviderAdapter
 import red.code101.app.adapters.recycler.AuthProviderAdapter
 import red.code101.app.ui.auth.LinkProvider
+import red.code101.app.utils.dpToPx
 import red.code101.app.utils.getMenuItem
 
 object BindingAdapters {
@@ -24,9 +30,28 @@ object BindingAdapters {
         Glide.with(view.context).load(url).circleCrop().into(view)
     }
 
-    @BindingAdapter("providers")
+    @BindingAdapter("photoUrl")
     @JvmStatic
-    fun loadProviders(view: RecyclerView, authProviders: List<AuthProvider>) {
+    fun loadImage(view: TextView, url: String?) {
+        if (url.isNullOrBlank()) return
+        Glide.with(view.context).asDrawable().load(url)
+            .apply(RequestOptions().override(64.dpToPx(), 64.dpToPx()))
+            .circleCrop().into(object : CustomTarget<Drawable>() {
+                override fun onResourceReady(resource: Drawable, t: Transition<in Drawable>?) {
+                    view.setCompoundDrawablesRelativeWithIntrinsicBounds(null, resource, null, null)
+                }
+
+                override fun onLoadCleared(placeholder: Drawable?) = Unit
+            })
+    }
+
+    @BindingAdapter("app:providers", "app:onUnlink")
+    @JvmStatic
+    fun loadProviders(
+        view: RecyclerView,
+        authProviders: List<AuthProvider>,
+        onUnlink: (String) -> Unit
+    ) {
         view.adapter = AuthProviderAdapter(
             authProviders = authProviders.toMutableList().apply {
                 // move first Email and password provider
@@ -34,7 +59,8 @@ object BindingAdapters {
                     remove(provider)
                     add(0, provider)
                 }
-            }
+            },
+            onUnlink = onUnlink
         )
         view.layoutManager = object : LinearLayoutManager(view.context) {
             override fun canScrollVertically(): Boolean = false

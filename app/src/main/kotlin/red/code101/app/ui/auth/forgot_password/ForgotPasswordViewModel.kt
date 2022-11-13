@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import code101.data.SendPasswordResetEmailUserCase
+import code101.data.auth.SendPasswordResetEmailUserCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch

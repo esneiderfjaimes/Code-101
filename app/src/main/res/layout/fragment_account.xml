@@ -12,11 +12,15 @@
         <import type="kotlin.Unit" />
 
         <variable
+            name="onUnlinkClick"
+            type="Function1&lt;String,Unit>" />
+
+        <variable
             name="onProviderClick"
             type="Function1&lt;LinkProvider,Unit>" />
 
         <variable
-            name="viewModel"
+            name="accountViewModel"
             type="red.code101.app.ui.account.AccountViewModel" />
     </data>
 
@@ -61,10 +65,31 @@
                 android:paddingTop="16dp"
                 android:paddingBottom="80dp">
 
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="8dp"
+                    app:cardCornerRadius="32dp"
+                    app:strokeWidth="0dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:padding="16dp"
+                        android:text="@{accountViewModel.user.name}"
+                        android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                        app:drawableTopCompat="@drawable/default_profile"
+                        app:photoUrl='@{accountViewModel.user != null ? accountViewModel.user.photoUrl.toString() : ""}'
+                        tools:text="Esneider Jaimes" />
+                </com.google.android.material.card.MaterialCardView>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="8dp"
+                    android:layout_marginTop="16dp"
                     android:text="@string/authentication"
                     android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
                     android:textStyle="bold" />
@@ -79,7 +104,8 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:providers="@{viewModel.user.authProviders}"
+                    app:providers="@{accountViewModel.user.authProviders}"
+                    app:onUnlink="@{onUnlinkClick}"
                     tools:itemCount="3"
                     tools:listitem="@layout/item_auth_provider" />
 
@@ -96,7 +122,7 @@
                     android:clipToPadding="false"
                     android:paddingVertical="8dp"
                     app:onProviderClick="@{onProviderClick}"
-                    app:providersMerge="@{viewModel.user.authProviders}"
+                    app:providersMerge="@{accountViewModel.user.authProviders}"
                     tools:itemCount="2"
                     tools:listitem="@layout/item_auth_link_provider"
                     tools:spanCount="2" />
@@ -117,7 +143,7 @@
                 style="@style/Widget.Material3.Button.TextButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> viewModel.signOut()}"
+                android:onClick="@{() -> accountViewModel.signOut()}"
                 android:text="@string/sign_out" />
         </RelativeLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

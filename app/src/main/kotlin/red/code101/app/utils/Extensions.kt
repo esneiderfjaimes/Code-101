@@ -1,6 +1,8 @@
 package red.code101.app.utils
 
 import android.content.Context
+import android.content.res.Resources
+import android.util.TypedValue
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
@@ -68,3 +70,9 @@ fun Fragment.navigateBack() {
 fun Context.animIn(view: View, @AnimRes id: Int) {
     view.startAnimation(AnimationUtils.loadAnimation(this, id))
 }
+
+fun Number.dpToPx() = TypedValue.applyDimension(
+    TypedValue.COMPLEX_UNIT_DIP,
+    this.toFloat(),
+    Resources.getSystem().displayMetrics
+).toInt()

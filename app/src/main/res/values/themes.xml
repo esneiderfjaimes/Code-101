@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
     <color name="filter">#40FFFFFF</color>
     <color name="background">@color/white</color>
